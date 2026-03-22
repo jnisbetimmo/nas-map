@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Client Onboarding — International Real Estate Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1a18;
+    --cream: #f5f2eb;
+    --warm-white: #faf8f4;
+    --gold: #b8973a;
+    --gold-light: #d4b05a;
+    --rust: #8b3a2a;
+    --sage: #4a5a4a;
+    --border: #d8d0c0;
+    --shadow: rgba(26,26,24,0.08);
+    --error: #8b3a2a;
+    --success: #3a6a3a;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘DM Mono’, monospace;
+background: var(–cream);
+color: var(–ink);
+min-height: 100vh;
+font-size: 13px;
+line-height: 1.7;
+}
+
+/* ──── DECORATIVE HEADER ──── */
+.page-header {
+background: var(–ink);
+color: var(–cream);
+padding: 3.5rem 4rem 2.5rem;
+position: relative;
+overflow: hidden;
+}
+.page-header::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background: repeating-linear-gradient(
+45deg,
+transparent,
+transparent 40px,
+rgba(184,151,58,0.04) 40px,
+rgba(184,151,58,0.04) 41px
+);
+}
+.header-rule {
+width: 40px;
+height: 1px;
+background: var(–gold);
+margin-bottom: 1.5rem;
+}
+.page-header h1 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(2rem, 4vw, 3.2rem);
+font-weight: 300;
+letter-spacing: 0.02em;
+line-height: 1.15;
+margin-bottom: 0.75rem;
+}
+.page-header h1 em {
+font-style: italic;
+color: var(–gold-light);
+}
+.page-header p {
+font-size: 11px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: rgba(245,242,235,0.55);
+margin-top: 1rem;
+}
+.jurisdiction-tags {
+display: flex;
+gap: 0.5rem;
+margin-top: 1.5rem;
+flex-wrap: wrap;
+}
+.tag {
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+padding: 0.3rem 0.8rem;
+border: 1px solid var(–gold);
+color: var(–gold-light);
+}
+
+/* ──── LEGAL BRIEFING PANEL ──── */
+.briefing-strip {
+background: #242420;
+color: var(–cream);
+padding: 0 4rem;
+overflow: hidden;
+max-height: 0;
+transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
+}
+.briefing-strip.open {
+max-height: 9999px;
+padding: 2.5rem 4rem;
+}
+.briefing-toggle {
+background: var(–gold);
+color: var(–ink);
+border: none;
+padding: 0.9rem 2rem;
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 0.6rem;
+transition: background 0.2s;
+width: 100%;
+justify-content: center;
+}
+.briefing-toggle:hover { background: var(–gold-light); }
+.briefing-toggle .arrow {
+transition: transform 0.3s;
+display: inline-block;
+}
+.briefing-toggle.open .arrow { transform: rotate(180deg); }
+
+.briefing-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2rem;
+margin-bottom: 2rem;
+}
+@media (max-width: 768px) { .briefing-grid { grid-template-columns: 1fr; } }
+
+.briefing-card {
+border: 1px solid rgba(184,151,58,0.25);
+padding: 1.5rem;
+}
+.briefing-card h3 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.1rem;
+font-weight: 600;
+color: var(–gold-light);
+margin-bottom: 1rem;
+letter-spacing: 0.04em;
+}
+.briefing-card h4 {
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(245,242,235,0.5);
+margin: 1rem 0 0.5rem;
+}
+.briefing-card p, .briefing-card li {
+font-size: 11.5px;
+color: rgba(245,242,235,0.8);
+line-height: 1.75;
+}
+.briefing-card ul { padding-left: 1rem; }
+.briefing-card li { margin-bottom: 0.3rem; }
+
+.action-points {
+border-top: 1px solid rgba(184,151,58,0.3);
+padding-top: 1.5rem;
+margin-top: 1rem;
+}
+.action-points h3 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.1rem;
+color: var(–gold-light);
+margin-bottom: 1rem;
+}
+.action-item {
+display: flex;
+gap: 1rem;
+margin-bottom: 0.75rem;
+align-items: flex-start;
+}
+.action-num {
+font-size: 10px;
+color: var(–gold);
+min-width: 24px;
+padding-top: 2px;
+}
+.action-item p {
+font-size: 11.5px;
+color: rgba(245,242,235,0.8);
+}
+
+/* ──── FORM WRAPPER ──── */
+.form-wrapper {
+max-width: 860px;
+margin: 0 auto;
+padding: 3rem 2rem 5rem;
+}
+
+.section-label {
+font-size: 9px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 1.5rem;
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+.section-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.form-section {
+margin-bottom: 3rem;
+padding: 2rem;
+background: var(–warm-white);
+border: 1px solid var(–border);
+position: relative;
+}
+.form-section::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0;
+width: 3px;
+height: 100%;
+background: var(–gold);
+}
+
+.form-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1.25rem;
+}
+.form-grid .full { grid-column: 1 / -1; }
+@media (max-width: 640px) {
+.form-grid { grid-template-columns: 1fr; }
+.form-grid .full { grid-column: 1; }
+}
+
+label {
+display: block;
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–sage);
+margin-bottom: 0.4rem;
+}
+label .req { color: var(–rust); margin-left: 2px; }
+
+input[type=“text”],
+input[type=“email”],
+input[type=“tel”],
+input[type=“date”],
+input[type=“number”],
+select,
+textarea {
+width: 100%;
+background: var(–cream);
+border: 1px solid var(–border);
+border-radius: 0;
+padding: 0.65rem 0.85rem;
+font-family: ‘DM Mono’, monospace;
+font-size: 12.5px;
+color: var(–ink);
+transition: border-color 0.2s;
+outline: none;
+appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+border-color: var(–gold);
+background: #fff;
+}
+input.invalid, select.invalid, textarea.invalid {
+border-color: var(–error);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%234a5a4a’ fill=‘none’ stroke-width=‘1.5’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 0.8rem center;
+padding-right: 2rem;
+cursor: pointer;
+}
+
+/* ──── CONSENT CHECKBOXES ──── */
+.consent-block {
+background: #f0ede4;
+border: 1px solid var(–border);
+border-left: 3px solid var(–rust);
+padding: 1.25rem 1.5rem;
+margin-bottom: 1rem;
+}
+.consent-item {
+display: flex;
+gap: 0.75rem;
+align-items: flex-start;
+margin-bottom: 0.75rem;
+}
+.consent-item:last-child { margin-bottom: 0; }
+.consent-item input[type=“checkbox”] {
+width: 16px;
+height: 16px;
+min-width: 16px;
+margin-top: 3px;
+cursor: pointer;
+accent-color: var(–rust);
+}
+.consent-item label {
+font-size: 11.5px;
+letter-spacing: 0;
+text-transform: none;
+color: var(–ink);
+cursor: pointer;
+}
+.consent-item label strong { color: var(–rust); }
+
+/* ──── FILE UPLOAD ──── */
+.upload-zone {
+border: 2px dashed var(–border);
+padding: 2rem;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.2s, background 0.2s;
+position: relative;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+border-color: var(–gold);
+background: rgba(184,151,58,0.04);
+}
+.upload-zone input[type=“file”] {
+position: absolute;
+inset: 0;
+opacity: 0;
+cursor: pointer;
+width: 100%;
+height: 100%;
+}
+.upload-icon {
+font-size: 2rem;
+margin-bottom: 0.5rem;
+display: block;
+}
+.upload-zone p {
+font-size: 11px;
+color: var(–sage);
+}
+.upload-zone .upload-hint {
+font-size: 10px;
+color: var(–border);
+margin-top: 0.3rem;
+letter-spacing: 0.06em;
+}
+.file-list {
+margin-top: 1rem;
+display: flex;
+flex-direction: column;
+gap: 0.4rem;
+}
+.file-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: var(–cream);
+border: 1px solid var(–border);
+padding: 0.5rem 0.75rem;
+font-size: 11px;
+}
+.file-item .remove {
+cursor: pointer;
+color: var(–rust);
+font-size: 12px;
+background: none;
+border: none;
+font-family: inherit;
+padding: 0;
+}
+
+/* ──── PEP / SANCTIONS DECLARATION ──── */
+.pep-block {
+background: #fff8f5;
+border: 1px solid #e8c8b8;
+border-left: 3px solid var(–rust);
+padding: 1.25rem 1.5rem;
+}
+.pep-block h4 {
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–rust);
+margin-bottom: 0.75rem;
+}
+
+/* ──── RADIO GROUP ──── */
+.radio-group {
+display: flex;
+gap: 1.5rem;
+flex-wrap: wrap;
+margin-top: 0.4rem;
+}
+.radio-option {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+cursor: pointer;
+font-size: 12px;
+color: var(–ink);
+letter-spacing: 0;
+text-transform: none;
+}
+.radio-option input { accent-color: var(–gold); cursor: pointer; }
+
+/* ──── SIGNATURE AREA ──── */
+.sig-canvas-wrap {
+border: 1px solid var(–border);
+background: #fff;
+position: relative;
+}
+canvas#sigCanvas {
+display: block;
+cursor: crosshair;
+touch-action: none;
+width: 100%;
+height: 120px;
+}
+.sig-controls {
+display: flex;
+justify-content: flex-end;
+padding: 0.4rem 0.6rem;
+border-top: 1px solid var(–border);
+background: var(–cream);
+}
+.btn-clear-sig {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+background: none;
+border: 1px solid var(–border);
+padding: 0.3rem 0.8rem;
+cursor: pointer;
+color: var(–sage);
+transition: border-color 0.2s;
+}
+.btn-clear-sig:hover { border-color: var(–gold); }
+
+/* ──── SUBMIT BUTTON ──── */
+.submit-row {
+margin-top: 2rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 1rem;
+}
+.btn-submit {
+background: var(–ink);
+color: var(–cream);
+border: none;
+padding: 1.1rem 3.5rem;
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+cursor: pointer;
+transition: background 0.25s, transform 0.15s;
+position: relative;
+overflow: hidden;
+}
+.btn-submit::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: var(–gold);
+transform: translateX(-101%);
+transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.btn-submit:hover::after { transform: translateX(0); }
+.btn-submit span { position: relative; z-index: 1; }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.submit-note {
+font-size: 10px;
+color: var(–sage);
+text-align: center;
+letter-spacing: 0.06em;
+max-width: 500px;
+}
+
+/* ──── TOAST ──── */
+#toast {
+position: fixed;
+bottom: 2rem;
+left: 50%;
+transform: translateX(-50%) translateY(4rem);
+background: var(–ink);
+color: var(–cream);
+padding: 1rem 2rem;
+font-size: 12px;
+letter-spacing: 0.06em;
+opacity: 0;
+transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+z-index: 9999;
+border-bottom: 2px solid var(–gold);
+pointer-events: none;
+white-space: nowrap;
+}
+#toast.show {
+opacity: 1;
+transform: translateX(-50%) translateY(0);
+}
+#toast.error { border-bottom-color: var(–rust); }
+
+/* ──── PROGRESS BAR ──── */
+.progress-bar {
+position: sticky;
+top: 0;
+z-index: 100;
+background: var(–cream);
+border-bottom: 1px solid var(–border);
+padding: 0.6rem 2rem;
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+.progress-track {
+flex: 1;
+height: 2px;
+background: var(–border);
+position: relative;
+}
+.progress-fill {
+height: 100%;
+background: var(–gold);
+transition: width 0.4s ease;
+width: 0%;
+}
+.progress-label {
+font-size: 9px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–sage);
+min-width: 70px;
+text-align: right;
+}
+
+/* ──── MISC ──── */
+.info-note {
+font-size: 10.5px;
+color: var(–sage);
+background: rgba(74,90,74,0.06);
+border-left: 2px solid var(–sage);
+padding: 0.6rem 1rem;
+margin-top: 0.75rem;
+line-height: 1.7;
+}
+.section-title {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.4rem;
+font-weight: 400;
+color: var(–ink);
+margin-bottom: 1.25rem;
+letter-spacing: 0.02em;
+}
+.divider {
+border: none;
+border-top: 1px solid var(–border);
+margin: 2rem 0;
+}
+.field-group { margin-bottom: 1rem; }
+.footnote {
+font-size: 10px;
+color: rgba(26,26,24,0.45);
+margin-top: 3rem;
+padding-top: 1.5rem;
+border-top: 1px solid var(–border);
+text-align: center;
+line-height: 2;
+}
+</style>
+
+</head>
+<body>
+
+<!-- ══════════════════════ HEADER ══════════════════════ -->
+
+<header class="page-header">
+  <div class="header-rule"></div>
+  <h1>International Real Estate<br><em>Client Onboarding</em></h1>
+  <div class="jurisdiction-tags">
+    <span class="tag">🇬🇧 UK — MLR 2017 / UK GDPR</span>
+    <span class="tag">🇪🇸 Spain — Ley 10/2010 / EU GDPR</span>
+    <span class="tag">AML / KYC Compliant</span>
+    <span class="tag">Data Protection Act 2018</span>
+    <span class="tag">LOPDGDD (Org. Law 3/2018)</span>
+  </div>
+  <p>Please complete all sections in full. Both the UK and Spanish representative offices will receive this submission simultaneously.</p>
+</header>
+
+<!-- ══════════════════════ LEGAL BRIEFING TOGGLE ══════════════════════ -->
+
+<button class="briefing-toggle" id="briefingBtn" onclick="toggleBriefing()">
+  <span>▼</span><span class="arrow" id="briefingArrow">▼</span> View Legal Briefing &amp; Regulatory Action Points
+</button>
+<div class="briefing-strip" id="briefingPanel">
+
+  <div class="briefing-grid">
+
+```
+<div class="briefing-card">
+  <h3>🇬🇧 UK Anti-Money Laundering</h3>
+  <h4>Legislative Framework</h4>
+  <p>Estate agents acting as broker agents for foreign properties are subject to the <strong>Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 (MLR 2017)</strong> and the <strong>Proceeds of Crime Act 2002 (POCA)</strong>. HMRC is the supervisory authority for estate agencies. As of 2025, HM Treasury has published draft amendments introducing a more risk-based, proportionate approach.</p>
+
+  <h4>Key Obligations</h4>
+  <ul>
+    <li>Register with HMRC for AML supervision before commencing activity</li>
+    <li>Appoint a Money Laundering Reporting Officer (MLRO)</li>
+    <li>Conduct Customer Due Diligence (CDD) on all prospective buyers/sellers — including identity verification, source of funds, and beneficial ownership</li>
+    <li>Apply Enhanced Due Diligence (EDD) for high-risk clients, Politically Exposed Persons (PEPs), and cross-border transactions</li>
+    <li>File Suspicious Activity Reports (SARs) to the National Crime Agency (NCA) where money laundering is suspected</li>
+    <li>Maintain records of all CDD for a minimum of 5 years</li>
+    <li>The 2025 NRA specifically flags real estate as a high-risk sector for opaque ownership structures</li>
+    <li>Digital ID verification frameworks are being formalised — all digital tools used must meet forthcoming HMRC/government criteria</li>
+  </ul>
+</div>
+
+<div class="briefing-card">
+  <h3>🇪🇸 Spanish Anti-Money Laundering</h3>
+  <h4>Legislative Framework</h4>
+  <p><strong>Ley 10/2010, de 28 de abril</strong> (as amended by Royal Decree-Law 7/2021 transposing the 5th EU AMLD) and <strong>Royal Decree 304/2014</strong> govern AML obligations. The supervisory authority is <strong>SEPBLAC</strong> (Servicio Ejecutivo de la Comisión de Prevención del Blanqueo de Capitales e Infracciones Monetarias). Real estate intermediaries are expressly listed as "obligated subjects" under Article 2.1.</p>
+
+  <h4>Key Obligations</h4>
+  <ul>
+    <li>Real estate agents carrying out intermediation are obligated subjects — including those acting on behalf of a foreign principal</li>
+    <li>Mandatory KYC: identify and verify customers and beneficial owners before establishing a business relationship</li>
+    <li>Verify the source and legitimacy of funds used in any property transaction</li>
+    <li>Apply Enhanced Due Diligence for cross-border clients and transactions above risk thresholds</li>
+    <li>Establish an Internal Control Body (OCI) responsible for AML procedures</li>
+    <li>File Suspicious Transaction Reports (STRs) with SEPBLAC</li>
+    <li>Annual AML training for all staff involved in regulated activity</li>
+    <li>Criminal penalties: up to 6 years imprisonment + fines of up to 3× the asset value for money laundering offences</li>
+  </ul>
+</div>
+
+<div class="briefing-card">
+  <h3>🇬🇧 UK Data Protection</h3>
+  <h4>Legislative Framework</h4>
+  <p>The <strong>UK GDPR</strong> (retained EU law, post-Brexit) and <strong>Data Protection Act 2018</strong> apply. The ICO (Information Commissioner's Office) is the supervisory authority. The EU has formally renewed its adequacy decision for the UK on 19 December 2025, allowing free data flows from EEA to UK.</p>
+
+  <h4>Key Obligations for Cross-Border Transfer</h4>
+  <ul>
+    <li>The UK is adequate under EU GDPR — data can flow freely from Spain to the UK</li>
+    <li>The UK must recognise EEA (including Spain) as adequate — data flows freely in both directions</li>
+    <li>A Data Processing Agreement (DPA) should be in place between the UK broker agent and the Spanish principal company</li>
+    <li>Clients must be informed of the identity of both data controllers and the purpose of transfer</li>
+    <li>Lawful basis for AML/KYC data processing: legal obligation (Art. 6(1)(c) UK GDPR) — consent is not required for compliance purposes</li>
+    <li>Data subjects have rights of access, rectification, erasure (where applicable), and portability</li>
+    <li>Privacy notices must be provided at point of collection</li>
+  </ul>
+</div>
+
+<div class="briefing-card">
+  <h3>🇪🇸 Spanish / EU Data Protection</h3>
+  <h4>Legislative Framework</h4>
+  <p><strong>EU GDPR (Regulation 2016/679)</strong> and <strong>Organic Law 3/2018 (LOPDGDD)</strong> apply. The AEPD (Agencia Española de Protección de Datos) is the supervisory authority. Minimum age of consent in Spain is 16 years under LOPDGDD.</p>
+
+  <h4>Key Obligations for Cross-Border Transfer</h4>
+  <ul>
+    <li>UK has adequacy status under EU GDPR (renewed December 2025) — transfer from Spain to UK is lawful without additional safeguards</li>
+    <li>For AML/CDD data processing, Article 6(1)(c) GDPR provides lawful basis — no separate consent required (confirmed by Royal Decree-Law 7/2021)</li>
+    <li>A formal Data Processing Agreement between the two entities is strongly recommended and best practice</li>
+    <li>Clients must receive a clear privacy notice (Información Básica sobre Protección de Datos) per LOPDGDD</li>
+    <li>AEPD must be notified of the cross-border data flow arrangement in the Record of Processing Activities (ROPA)</li>
+    <li>Non-compliance: fines up to €20 million or 4% of global annual turnover (whichever is higher)</li>
+  </ul>
+</div>
+```
+
+  </div>
+
+  <div class="action-points">
+    <h3>⚡ Regulatory Action Points — Both Entities</h3>
+    <div class="action-item"><span class="action-num">01</span><p>The UK company must be registered with HMRC for AML supervision as an estate agent. Confirm registration is current and covers broker agent activity for foreign (Spanish) properties.</p></div>
+    <div class="action-item"><span class="action-num">02</span><p>A bilateral <strong>Data Processing Agreement (DPA / Data Sharing Agreement)</strong> must be executed between the UK broker agent and the Spanish principal company, defining controller/processor roles, data categories, retention periods, and security measures.</p></div>
+    <div class="action-item"><span class="action-num">03</span><p>Both entities must maintain a <strong>Record of Processing Activities (ROPA)</strong> documenting the cross-border data flow, purposes, legal bases, and security arrangements.</p></div>
+    <div class="action-item"><span class="action-num">04</span><p>A joint <strong>Privacy Notice</strong> must be made available to all prospective clients before or at the point of data collection, in both English and Spanish, covering both UK GDPR and EU GDPR requirements.</p></div>
+    <div class="action-item"><span class="action-num">05</span><p>The UK entity must appoint or designate an <strong>MLRO</strong>. The Spanish entity must establish or confirm its <strong>OCI (Internal Control Body)</strong> per Ley 10/2010.</p></div>
+    <div class="action-item"><span class="action-num">06</span><p>All client identity documents and KYC records must be retained for a minimum of <strong>5 years</strong> post-transaction or post-business relationship, under both UK MLR 2017 and Spanish Ley 10/2010.</p></div>
+    <div class="action-item"><span class="action-num">07</span><p>Any transaction where the source of funds or client identity raises suspicion must trigger a <strong>SAR (UK)</strong> or <strong>STR (Spain)</strong> filing. Neither entity may "tip off" the client that a report has been made.</p></div>
+    <div class="action-item"><span class="action-num">08</span><p>The broker agent agreement between the two companies should explicitly allocate AML compliance responsibilities and acknowledge the cross-border data transfer arrangement, to provide legal clarity under both jurisdictions.</p></div>
+    <div class="action-item"><span class="action-num">09</span><p>Digital identity verification tools used in this form must meet the forthcoming UK government digital ID assurance standards (expected HMRC guidance 2025/26) and EU eIDAS-equivalent standards for Spanish compliance.</p></div>
+    <div class="action-item"><span class="action-num">10</span><p><strong>Legal disclaimer</strong>: This briefing and this form are prepared for operational guidance. Both companies must obtain independent legal advice from solicitors/abogados qualified in UK and Spanish law before commencing regulated activity.</p></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ PROGRESS ══════════════════════ -->
+
+<div class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-label" id="progressLabel">0% complete</span>
+</div>
+
+<!-- ══════════════════════ FORM ══════════════════════ -->
+
+<div class="form-wrapper">
+<form id="mainForm" novalidate>
+
+  <!-- PRIVACY NOTICE -->
+
+  <div class="section-label">Privacy Notice</div>
+  <div class="form-section">
+    <p class="section-title">Data Protection Information</p>
+    <p style="font-size:11.5px;line-height:1.8;color:#444;margin-bottom:1rem;">
+      Your personal data is being collected and processed by <strong>[UK Company Name]</strong> (UK company, registered with HMRC for AML supervision) acting as broker agent for <strong>[Spanish Company Name]</strong> (Spanish company, inscribed in the Registro Mercantil), collectively the "Data Controllers."
+    </p>
+    <p style="font-size:11.5px;line-height:1.8;color:#444;margin-bottom:1rem;">
+      <strong>Purpose:</strong> Identity verification, anti-money laundering (AML) compliance, Know Your Customer (KYC) due diligence, and the provision of real estate intermediation services for Spanish property.<br>
+      <strong>Legal basis (UK GDPR Art. 6(1)(c) / EU GDPR Art. 6(1)(c)):</strong> Processing is necessary to comply with legal obligations under the UK Money Laundering Regulations 2017 and Spanish Ley 10/2010 de prevención del blanqueo de capitales.<br>
+      <strong>Transfer:</strong> Your data will be shared between the UK and Spanish entities. The UK has been granted EU adequacy status (renewed December 2025), permitting this transfer without additional safeguards.<br>
+      <strong>Retention:</strong> Records will be retained for a minimum of 5 years from the end of the business relationship, as required by law.<br>
+      <strong>Your rights:</strong> You have the right to access, rectify, and (in certain circumstances) erase your data. You may lodge a complaint with the ICO (UK) or AEPD (Spain).
+    </p>
+    <div class="info-note">📋 UK supervisory authority: Information Commissioner's Office (ICO) — ico.org.uk &nbsp;|&nbsp; Spanish supervisory authority: Agencia Española de Protección de Datos (AEPD) — aepd.es</div>
+  </div>
+
+  <!-- SECTION 1: PERSONAL DETAILS -->
+
+  <div class="section-label">Section 1 — Personal Identification</div>
+  <div class="form-section">
+    <p class="section-title">Personal Details</p>
+    <div class="form-grid">
+      <div class="field-group">
+        <label for="title">Title</label>
+        <select id="title" name="title">
+          <option value="">Select…</option>
+          <option>Mr</option><option>Mrs</option><option>Ms</option><option>Miss</option><option>Dr</option><option>Prof</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="dob">Date of Birth <span class="req">*</span></label>
+        <input type="date" id="dob" name="dob" required />
+      </div>
+      <div class="field-group">
+        <label for="fname">First Name(s) <span class="req">*</span></label>
+        <input type="text" id="fname" name="fname" required autocomplete="given-name" />
+      </div>
+      <div class="field-group">
+        <label for="lname">Surname <span class="req">*</span></label>
+        <input type="text" id="lname" name="lname" required autocomplete="family-name" />
+      </div>
+      <div class="field-group full">
+        <label for="nationality">Nationality / Country of Citizenship <span class="req">*</span></label>
+        <input type="text" id="nationality" name="nationality" required placeholder="e.g. British, Spanish, French…" />
+      </div>
+      <div class="field-group">
+        <label for="idType">Primary Identity Document Type <span class="req">*</span></label>
+        <select id="idType" name="idType" required>
+          <option value="">Select…</option>
+          <option>Passport</option>
+          <option>National Identity Card (EU/EEA)</option>
+          <option>UK Driving Licence (with photo)</option>
+          <option>Other Government-Issued Photo ID</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="idNumber">Document Number <span class="req">*</span></label>
+        <input type="text" id="idNumber" name="idNumber" required placeholder="As shown on document" />
+      </div>
+      <div class="field-group">
+        <label for="idExpiry">Document Expiry Date <span class="req">*</span></label>
+        <input type="date" id="idExpiry" name="idExpiry" required />
+      </div>
+      <div class="field-group">
+        <label for="idIssueCountry">Issuing Country <span class="req">*</span></label>
+        <input type="text" id="idIssueCountry" name="idIssueCountry" required />
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CONTACT & ADDRESS -->
+
+  <div class="section-label">Section 2 — Contact &amp; Address</div>
+  <div class="form-section">
+    <p class="section-title">Contact Information</p>
+    <div class="form-grid">
+      <div class="field-group">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+      </div>
+      <div class="field-group">
+        <label for="phone">Telephone (incl. country code) <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" required placeholder="+44 or +34…" />
+      </div>
+      <div class="field-group full">
+        <label for="address1">Current Residential Address — Line 1 <span class="req">*</span></label>
+        <input type="text" id="address1" name="address1" required autocomplete="address-line1" />
+      </div>
+      <div class="field-group full">
+        <label for="address2">Address Line 2</label>
+        <input type="text" id="address2" name="address2" autocomplete="address-line2" />
+      </div>
+      <div class="field-group">
+        <label for="city">City / Town <span class="req">*</span></label>
+        <input type="text" id="city" name="city" required />
+      </div>
+      <div class="field-group">
+        <label for="postcode">Postcode / Postal Code <span class="req">*</span></label>
+        <input type="text" id="postcode" name="postcode" required />
+      </div>
+      <div class="field-group full">
+        <label for="country">Country of Residence <span class="req">*</span></label>
+        <input type="text" id="country" name="country" required />
+      </div>
+      <div class="field-group full">
+        <label for="residencyDuration">How long have you been at this address? <span class="req">*</span></label>
+        <select id="residencyDuration" name="residencyDuration" required>
+          <option value="">Select…</option>
+          <option>Less than 3 months</option>
+          <option>3–12 months</option>
+          <option>1–3 years</option>
+          <option>More than 3 years</option>
+        </select>
+      </div>
+      <div class="field-group full" id="prevAddressWrap" style="display:none;">
+        <label for="prevAddress">Previous Address (if less than 3 years at current address) <span class="req">*</span></label>
+        <textarea id="prevAddress" name="prevAddress" placeholder="Full previous address including country"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PROFESSIONAL & FINANCIAL -->
+
+  <div class="section-label">Section 3 — Professional &amp; Financial Profile (AML/KYC)</div>
+  <div class="form-section">
+    <p class="section-title">Employment &amp; Source of Funds</p>
+    <div class="info-note">This information is required under UK Money Laundering Regulations 2017 (Regulation 28) and Spanish Ley 10/2010 (Art. 3–4) to verify the source and legitimacy of funds used in property transactions.</div>
+    <div class="form-grid" style="margin-top:1.25rem;">
+      <div class="field-group">
+        <label for="employment">Employment Status <span class="req">*</span></label>
+        <select id="employment" name="employment" required>
+          <option value="">Select…</option>
+          <option>Employed (PAYE)</option>
+          <option>Self-Employed / Freelance</option>
+          <option>Company Director</option>
+          <option>Retired</option>
+          <option>Student</option>
+          <option>Investor / Private Wealth</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="occupation">Occupation / Job Title <span class="req">*</span></label>
+        <input type="text" id="occupation" name="occupation" required />
+      </div>
+      <div class="field-group full">
+        <label for="employer">Employer / Company Name (if applicable)</label>
+        <input type="text" id="employer" name="employer" />
+      </div>
+      <div class="field-group full">
+        <label for="budgetRange">Approximate Purchase Budget (EUR / GBP) <span class="req">*</span></label>
+        <select id="budgetRange" name="budgetRange" required>
+          <option value="">Select…</option>
+          <option>Up to €100,000</option>
+          <option>€100,001 – €250,000</option>
+          <option>€250,001 – €500,000</option>
+          <option>€500,001 – €1,000,000</option>
+          <option>€1,000,001 – €2,000,000</option>
+          <option>Over €2,000,000</option>
+        </select>
+      </div>
+      <div class="field-group full">
+        <label>Primary Source of Funds for Purchase <span class="req">*</span> (select all that apply)</label>
+        <div style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.75rem;">
+          <label class="radio-option"><input type="checkbox" name="sof" value="employment_income"> Employment income</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="savings"> Personal savings</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="sale_property"> Sale of property</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="inheritance"> Inheritance / Gift</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="investment"> Investment returns</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="mortgage"> Mortgage / Loan</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="business"> Business proceeds</label>
+          <label class="radio-option"><input type="checkbox" name="sof" value="other_sof"> Other</label>
+        </div>
+      </div>
+      <div class="field-group full">
+        <label for="sofDetail">Please provide further details of source of funds <span class="req">*</span></label>
+        <textarea id="sofDetail" name="sofDetail" required placeholder="Describe the origin of the funds you intend to use for this purchase…"></textarea>
+      </div>
+      <div class="field-group full">
+        <label for="bankCountry">Country where purchase funds are currently held <span class="req">*</span></label>
+        <input type="text" id="bankCountry" name="bankCountry" required />
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PURCHASE INTENT -->
+
+  <div class="section-label">Section 4 — Property Interest</div>
+  <div class="form-section">
+    <p class="section-title">Property Enquiry Details</p>
+    <div class="form-grid">
+      <div class="field-group full">
+        <label for="propertyType">Type of Property Sought <span class="req">*</span></label>
+        <select id="propertyType" name="propertyType" required>
+          <option value="">Select…</option>
+          <option>Residential — Apartment</option>
+          <option>Residential — Villa / House</option>
+          <option>Commercial Property</option>
+          <option>Land / Plot</option>
+          <option>Rural / Agricultural Property</option>
+          <option>Holiday / Investment Property</option>
+        </select>
+      </div>
+      <div class="field-group full">
+        <label for="locationPref">Preferred Location(s) in Spain</label>
+        <input type="text" id="locationPref" name="locationPref" placeholder="e.g. Costa del Sol, Madrid, Barcelona, Valencia…" />
+      </div>
+      <div class="field-group full">
+        <label>Purpose of Purchase <span class="req">*</span></label>
+        <div class="radio-group" style="margin-top:0.4rem;">
+          <label class="radio-option"><input type="radio" name="purpose" value="primary_res" required> Primary residence</label>
+          <label class="radio-option"><input type="radio" name="purpose" value="holiday"> Holiday home</label>
+          <label class="radio-option"><input type="radio" name="purpose" value="investment"> Investment / Buy-to-let</label>
+          <label class="radio-option"><input type="radio" name="purpose" value="commercial"> Commercial use</label>
+          <label class="radio-option"><input type="radio" name="purpose" value="other_purpose"> Other</label>
+        </div>
+      </div>
+      <div class="field-group full">
+        <label for="additionalNotes">Additional Requirements or Notes</label>
+        <textarea id="additionalNotes" name="additionalNotes" placeholder="Please describe any specific requirements, preferences, or questions…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: PEP & SANCTIONS -->
+
+  <div class="section-label">Section 5 — PEP &amp; Sanctions Screening</div>
+  <div class="form-section">
+    <p class="section-title">Politically Exposed Person (PEP) &amp; Sanctions Declaration</p>
+    <div class="info-note" style="margin-bottom:1.25rem;">Required under UK MLR 2017 (Regulations 35–36) and Spanish Ley 10/2010 (Art. 14). A PEP is defined as an individual who holds or has held a prominent public function, or a family member or close associate of such a person.</div>
+    <div class="pep-block">
+      <h4>PEP Declaration</h4>
+      <div class="form-grid">
+        <div class="field-group full">
+          <label>Are you, or have you in the last 12 months been, a Politically Exposed Person (PEP) — i.e. held a prominent public position (elected official, senior government officer, military officer, judicial officer, ambassador, senior executive of a state-owned enterprise, etc.)? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="isPEP" value="yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="isPEP" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field-group full">
+          <label>Are you an immediate family member or known close associate of a PEP? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="isPEPAssociate" value="yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="isPEPAssociate" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field-group full" id="pepDetailWrap" style="display:none;">
+          <label for="pepDetail">Please provide details of PEP status or association</label>
+          <textarea id="pepDetail" name="pepDetail"></textarea>
+        </div>
+        <div class="field-group full">
+          <label>Are you, to the best of your knowledge, subject to any financial sanctions, asset freezes, or included on any sanctions list (UN, EU, UK, OFAC, or other)? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="isSanctioned" value="yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="isSanctioned" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field-group full">
+          <label>Have you, or any company in which you hold more than 25% beneficial ownership, been convicted of, or are currently under investigation for, any financial crime, fraud, tax evasion, or money laundering offence? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="isCriminalRecord" value="yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="isCriminalRecord" value="no"> No</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info-note" style="margin-top:1rem;">If you answered <strong>Yes</strong> to any of the above, Enhanced Due Diligence will apply. A member of our compliance team will contact you. Note: Answering Yes does not automatically disqualify you — it triggers additional verification steps as required by law.</div>
+  </div>
+
+  <!-- SECTION 6: BENEFICIAL OWNERSHIP -->
+
+  <div class="section-label">Section 6 — Beneficial Ownership</div>
+  <div class="form-section">
+    <p class="section-title">Purchasing Entity Declaration</p>
+    <div class="form-grid">
+      <div class="field-group full">
+        <label>Will this purchase be made in your personal name? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="personalPurchase" value="yes" required> Yes — in my personal name</label>
+          <label class="radio-option"><input type="radio" name="personalPurchase" value="company"> No — via a company or corporate vehicle</label>
+          <label class="radio-option"><input type="radio" name="personalPurchase" value="trust"> No — via a trust, foundation, or similar structure</label>
+          <label class="radio-option"><input type="radio" name="personalPurchase" value="joint"> Joint purchase with another individual</label>
+        </div>
+      </div>
+      <div class="field-group full" id="companyDetailsWrap" style="display:none;">
+        <label for="companyName">Company / Entity Name</label>
+        <input type="text" id="companyName" name="companyName" />
+        <div style="margin-top:0.75rem;">
+          <label for="companyReg">Company Registration Number &amp; Country of Incorporation</label>
+          <input type="text" id="companyReg" name="companyReg" />
+        </div>
+        <div style="margin-top:0.75rem;">
+          <label for="ultimateBeneficiary">Ultimate Beneficial Owner(s) — name and % ownership for each person holding >25%</label>
+          <textarea id="ultimateBeneficiary" name="ultimateBeneficiary" placeholder="e.g. John Smith — 75%, Jane Smith — 25%"></textarea>
+        </div>
+      </div>
+      <div class="field-group full" id="jointDetailsWrap" style="display:none;">
+        <label for="jointPurchaserName">Co-purchaser Full Name(s)</label>
+        <input type="text" id="jointPurchaserName" name="jointPurchaserName" />
+        <div class="info-note" style="margin-top:0.5rem;">All co-purchasers will be required to complete separate identity verification documentation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: DOCUMENT UPLOAD -->
+
+  <div class="section-label">Section 7 — Document Upload</div>
+  <div class="form-section">
+    <p class="section-title">Identity &amp; Supporting Documents</p>
+    <div class="info-note" style="margin-bottom:1.5rem;">All documents must be clear, legible, and unexpired. Accepted formats: PDF, JPG, PNG, HEIC. Maximum 10MB per file. Documents are transmitted via end-to-end encrypted channels and stored securely in compliance with UK GDPR and EU GDPR.</div>
+
+```
+<div class="form-grid">
+
+  <div class="field-group full">
+    <label>Photo Identity Document (Passport / ID Card) <span class="req">*</span></label>
+    <div class="upload-zone" id="zone-id" ondragover="handleDragOver(event,'zone-id')" ondragleave="handleDragLeave(event,'zone-id')" ondrop="handleDrop(event,'zone-id','upload-id')">
+      <input type="file" id="upload-id" name="upload-id" accept=".pdf,.jpg,.jpeg,.png,.heic" multiple />
+      <span class="upload-icon">🪪</span>
+      <p>Drag &amp; drop or click to upload</p>
+      <p class="upload-hint">Passport bio-data page or both sides of National ID Card</p>
+    </div>
+    <div class="file-list" id="list-upload-id"></div>
+  </div>
+
+  <div class="field-group full">
+    <label>Proof of Address (dated within last 3 months) <span class="req">*</span></label>
+    <div class="upload-zone" id="zone-poa" ondragover="handleDragOver(event,'zone-poa')" ondragleave="handleDragLeave(event,'zone-poa')" ondrop="handleDrop(event,'zone-poa','upload-poa')">
+      <input type="file" id="upload-poa" name="upload-poa" accept=".pdf,.jpg,.jpeg,.png,.heic" multiple />
+      <span class="upload-icon">🏠</span>
+      <p>Drag &amp; drop or click to upload</p>
+      <p class="upload-hint">Bank statement, utility bill, or official government letter</p>
+    </div>
+    <div class="file-list" id="list-upload-poa"></div>
+  </div>
+
+  <div class="field-group full">
+    <label>Source of Funds Evidence <span class="req">*</span></label>
+    <div class="upload-zone" id="zone-sof" ondragover="handleDragOver(event,'zone-sof')" ondragleave="handleDragLeave(event,'zone-sof')" ondrop="handleDrop(event,'zone-sof','upload-sof')">
+      <input type="file" id="upload-sof" name="upload-sof" accept=".pdf,.jpg,.jpeg,.png,.heic" multiple />
+      <span class="upload-icon">💷</span>
+      <p>Drag &amp; drop or click to upload</p>
+      <p class="upload-hint">Bank statements (last 3 months), proof of sale, inheritance documents, payslips, or investment statements</p>
+    </div>
+    <div class="file-list" id="list-upload-sof"></div>
+  </div>
+
+  <div class="field-group full">
+    <label>Additional Supporting Documents (optional)</label>
+    <div class="upload-zone" id="zone-other" ondragover="handleDragOver(event,'zone-other')" ondragleave="handleDragLeave(event,'zone-other')" ondrop="handleDrop(event,'zone-other','upload-other')">
+      <input type="file" id="upload-other" name="upload-other" accept=".pdf,.jpg,.jpeg,.png,.heic" multiple />
+      <span class="upload-icon">📎</span>
+      <p>Drag &amp; drop or click to upload</p>
+      <p class="upload-hint">Company documents, trust deeds, mortgage offers, tax returns, or other relevant documentation</p>
+    </div>
+    <div class="file-list" id="list-upload-other"></div>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- SECTION 8: CONSENTS & AUTHORISATIONS -->
+
+  <div class="section-label">Section 8 — Consents &amp; Authorisations</div>
+  <div class="form-section">
+    <p class="section-title">Required Declarations &amp; Consents</p>
+    <div class="info-note" style="margin-bottom:1.25rem;">Please read each statement carefully and tick to confirm your agreement. All items marked with <strong style="color:var(--rust);">*</strong> are mandatory.</div>
+
+```
+<div class="consent-block">
+  <div class="consent-item">
+    <input type="checkbox" id="c1" name="c1" required />
+    <label for="c1"><strong>* Identity &amp; Information Accuracy:</strong> I confirm that all information provided in this form is true, accurate, and complete to the best of my knowledge. I understand that providing false or misleading information in connection with AML/KYC compliance may constitute a criminal offence under the Proceeds of Crime Act 2002 (UK) and the Spanish Criminal Code.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c2" name="c2" required />
+    <label for="c2"><strong>* AML/KYC Compliance Consent (Legal Obligation):</strong> I consent to the collection, processing, and verification of my personal data — including identity documents, financial information, and source of funds evidence — for the purposes of complying with the UK Money Laundering, Terrorist Financing and Transfer of Funds (Information on the Payer) Regulations 2017 and Spanish Ley 10/2010 de prevención del blanqueo de capitales y de la financiación del terrorismo.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c3" name="c3" required />
+    <label for="c3"><strong>* Cross-Border Data Transfer Authorisation:</strong> I authorise the transfer of my personal data between <strong>[UK Company Name]</strong> (United Kingdom) and <strong>[Spanish Company Name]</strong> (Spain) for the purposes of providing real estate broker agent services, AML/KYC compliance, and property transaction facilitation. I understand that both the UK and Spain have been granted mutual adequacy status under their respective data protection regimes, and that this transfer is conducted under a Data Processing Agreement between the two entities.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c4" name="c4" required />
+    <label for="c4"><strong>* Data Retention:</strong> I understand that my personal data and supporting documents will be retained for a minimum of 5 years following the conclusion or cessation of our business relationship, as required by UK MLR 2017 and Spanish Ley 10/2010. Data will be securely deleted upon expiry of this period, unless a longer period is required by law.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c5" name="c5" required />
+    <label for="c5"><strong>* PEP &amp; Sanctions Accuracy:</strong> I confirm that my answers regarding Politically Exposed Person (PEP) status and sanctions screening are accurate and complete, and I undertake to notify [UK Company Name] and [Spanish Company Name] promptly if my status changes.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c6" name="c6" required />
+    <label for="c6"><strong>* Privacy Notice Acknowledgement:</strong> I confirm that I have read and understood the Data Protection Information provided above, including details of the data controllers, purposes of processing, legal bases, data transfer arrangements, retention periods, and my rights under UK GDPR and EU GDPR / LOPDGDD.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c7" name="c7" required />
+    <label for="c7"><strong>* No SAR Tipping-Off:</strong> I acknowledge that [UK Company Name] and [Spanish Company Name] are under a legal obligation to report any suspicion of money laundering or terrorist financing to the relevant authorities (UK: NCA; Spain: SEPBLAC) without notifying the subject of the report. I acknowledge that neither company may be held liable for compliance with this obligation.</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c8" name="c8" required />
+    <label for="c8"><strong>* Broker Agent Relationship:</strong> I understand and agree that [UK Company Name] is acting as broker agent on behalf of [Spanish Company Name], and that this relationship and its scope have been disclosed to me. I authorise both entities to act in connection with my property enquiry and any subsequent transaction.</label>
+  </div>
+</div>
+
+<div class="consent-block" style="border-left-color: var(--sage); background: rgba(74,90,74,0.04); margin-top:1rem;">
+  <div class="consent-item">
+    <input type="checkbox" id="c9" name="c9" />
+    <label for="c9"><strong>Marketing Communications (Optional):</strong> I consent to receiving marketing communications about property listings, market updates, and services from [UK Company Name] and [Spanish Company Name] by email. I understand I may withdraw this consent at any time. (Lawful basis: Consent — Art. 6(1)(a) UK GDPR / EU GDPR)</label>
+  </div>
+  <div class="consent-item">
+    <input type="checkbox" id="c10" name="c10" />
+    <label for="c10"><strong>Third-Party Referrals (Optional):</strong> I consent to my contact details being shared with trusted third-party professional service providers (e.g. Spanish lawyers / abogados, mortgage brokers, currency exchange specialists, surveyors) for the purpose of facilitating my property purchase. I understand I may withdraw this consent at any time.</label>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- SECTION 9: SIGNATURE -->
+
+  <div class="section-label">Section 9 — Electronic Signature</div>
+  <div class="form-section">
+    <p class="section-title">Declaration &amp; Signature</p>
+    <p style="font-size:11.5px;line-height:1.8;color:#444;margin-bottom:1.25rem;">
+      By signing below, I confirm that I have read, understood, and agree to all declarations, consents, and authorisations set out in this form. I understand that my electronic signature carries the same legal weight as a handwritten signature for the purposes of this declaration.
+    </p>
+    <div class="form-grid">
+      <div class="field-group">
+        <label for="sigName">Full Name (Print) <span class="req">*</span></label>
+        <input type="text" id="sigName" name="sigName" required />
+      </div>
+      <div class="field-group">
+        <label for="sigDate">Date <span class="req">*</span></label>
+        <input type="date" id="sigDate" name="sigDate" required />
+      </div>
+      <div class="field-group full">
+        <label>Electronic Signature <span class="req">*</span></label>
+        <div class="sig-canvas-wrap">
+          <canvas id="sigCanvas" width="800" height="120"></canvas>
+          <div class="sig-controls">
+            <button type="button" class="btn-clear-sig" onclick="clearSignature()">Clear signature</button>
+          </div>
+        </div>
+        <div class="info-note" style="margin-top:0.5rem;">Please sign in the box above using your mouse, stylus, or finger on touchscreen.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMISSION -->
+
+  <div class="submit-row">
+    <button type="submit" class="btn-submit" id="submitBtn">
+      <span>Submit Securely to UK &amp; Spanish Office</span>
+    </button>
+    <p class="submit-note">Upon submission, this form and all attached documents will be sent simultaneously to the UK and Spanish representative offices via encrypted transmission. You will receive a confirmation email.</p>
+  </div>
+
+  <p class="footnote">
+    This form is for information collection purposes in compliance with AML/KYC legal obligations.<br>
+    It does not constitute a contract, offer, or binding agreement.<br>
+    <strong>[UK Company Name]</strong> · Registered in England &amp; Wales · HMRC AML Supervised · ICO Registered<br>
+    <strong>[Spanish Company Name]</strong> · Inscrita en el Registro Mercantil · Sujeto Obligado Ley 10/2010 · AEPD Registrada<br>
+    Legal Briefing References: MLR 2017 · POCA 2002 · UK GDPR / DPA 2018 · Ley 10/2010 · RD 304/2014 · EU GDPR (Reg. 2016/679) · LOPDGDD (LO 3/2018)
+  </p>
+
+</form>
+</div>
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+<script>
+// ══════ BRIEFING TOGGLE ══════
+function toggleBriefing() {
+  const panel = document.getElementById('briefingPanel');
+  const btn = document.getElementById('briefingBtn');
+  const arrow = document.getElementById('briefingArrow');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+  arrow.style.transform = panel.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// ══════ CONDITIONAL FIELDS ══════
+document.getElementById('residencyDuration').addEventListener('change', function() {
+  const wrap = document.getElementById('prevAddressWrap');
+  const show = ['Less than 3 months','3–12 months','1–3 years'].includes(this.value);
+  wrap.style.display = show ? 'block' : 'none';
+  document.getElementById('prevAddress').required = show;
+});
+
+document.querySelectorAll('input[name="isPEP"], input[name="isPEPAssociate"]').forEach(r => {
+  r.addEventListener('change', function() {
+    const pepY = document.querySelector('input[name="isPEP"]:checked')?.value === 'yes';
+    const assocY = document.querySelector('input[name="isPEPAssociate"]:checked')?.value === 'yes';
+    const wrap = document.getElementById('pepDetailWrap');
+    wrap.style.display = (pepY || assocY) ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('input[name="personalPurchase"]').forEach(r => {
+  r.addEventListener('change', function() {
+    document.getElementById('companyDetailsWrap').style.display = ['company','trust'].includes(this.value) ? 'block' : 'none';
+    document.getElementById('jointDetailsWrap').style.display = this.value === 'joint' ? 'block' : 'none';
+  });
+});
+
+// ══════ SET TODAY'S DATE ══════
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('sigDate').value = today;
+
+// ══════ FILE UPLOAD ══════
+const fileStores = {};
+['upload-id','upload-poa','upload-sof','upload-other'].forEach(id => {
+  fileStores[id] = [];
+  const input = document.getElementById(id);
+  input.addEventListener('change', function() {
+    addFiles(id, this.files);
+    this.value = '';
+  });
+});
+
+function addFiles(inputId, files) {
+  Array.from(files).forEach(file => {
+    if (file.size > 10 * 1024 * 1024) { showToast('File too large: ' + file.name + ' (max 10MB)', true); return; }
+    fileStores[inputId].push(file);
+  });
+  renderFileList(inputId);
+  updateProgress();
+}
+
+function renderFileList(inputId) {
+  const list = document.getElementById('list-' + inputId);
+  list.innerHTML = '';
+  fileStores[inputId].forEach((file, i) => {
+    const item = document.createElement('div');
+    item.className = 'file-item';
+    item.innerHTML = `<span>📄 ${file.name} <span style="color:var(--sage);opacity:0.6;">(${(file.size/1024).toFixed(0)} KB)</span></span>
+      <button type="button" class="remove" onclick="removeFile('${inputId}',${i})">✕ Remove</button>`;
+    list.appendChild(item);
+  });
+}
+
+function removeFile(inputId, idx) {
+  fileStores[inputId].splice(idx, 1);
+  renderFileList(inputId);
+  updateProgress();
+}
+
+function handleDragOver(e, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId).classList.add('drag-over');
+}
+function handleDragLeave(e, zoneId) {
+  document.getElementById(zoneId).classList.remove('drag-over');
+}
+function handleDrop(e, zoneId, inputId) {
+  e.preventDefault();
+  document.getElementById(zoneId).classList.remove('drag-over');
+  addFiles(inputId, e.dataTransfer.files);
+}
+
+// ══════ SIGNATURE ══════
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, hasSig = false;
+let lastX = 0, lastY = 0;
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  if (e.touches) {
+    return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
+  }
+  return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; });
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; });
+canvas.addEventListener('mousemove', e => { if (!drawing) return; draw(e); });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; draw(e); });
+canvas.addEventListener('mouseup', () => { drawing = false; });
+canvas.addEventListener('touchend', () => { drawing = false; });
+
+function draw(e) {
+  const p = getPos(e);
+  ctx.beginPath();
+  ctx.strokeStyle = '#1a1a18';
+  ctx.lineWidth = 1.8;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+  lastX = p.x; lastY = p.y;
+  hasSig = true;
+  updateProgress();
+}
+
+function clearSignature() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSig = false;
+  updateProgress();
+}
+
+// ══════ PROGRESS ══════
+function updateProgress() {
+  const requiredFields = document.querySelectorAll('[required]');
+  let filled = 0;
+  requiredFields.forEach(f => {
+    if (f.type === 'checkbox' && f.checked) filled++;
+    else if (f.type === 'radio') { if (document.querySelector(`input[name="${f.name}"]:checked`)) filled++; }
+    else if (f.value.trim()) filled++;
+  });
+  if (hasSig) filled++;
+  if (fileStores['upload-id'].length) filled++;
+  if (fileStores['upload-poa'].length) filled++;
+  if (fileStores['upload-sof'].length) filled++;
+
+  const total = requiredFields.length + 4;
+  const pct = Math.min(Math.round((filled / total) * 100), 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '% complete';
+}
+
+document.getElementById('mainForm').addEventListener('input', updateProgress);
+document.getElementById('mainForm').addEventListener('change', updateProgress);
+
+// ══════ TOAST ══════
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (isError ? ' error' : '');
+  setTimeout(() => { t.className = ''; }, 3500);
+}
+
+// ══════ FORM VALIDATION & SUBMIT ══════
+document.getElementById('mainForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let valid = true;
+  const errors = [];
+
+  // Required fields
+  document.querySelectorAll('[required]').forEach(f => {
+    f.classList.remove('invalid');
+    if (f.type === 'checkbox') {
+      if (!f.checked) { f.closest('.consent-item')?.querySelector('label')?.style && (f.classList.add('invalid')); valid = false; errors.push(f.id); }
+    } else if (f.type === 'radio') {
+      const group = document.querySelectorAll(`input[name="${f.name}"]`);
+      if (![...group].some(r => r.checked)) { valid = false; if (!errors.includes(f.name)) errors.push(f.name); }
+    } else {
+      if (!f.value.trim()) { f.classList.add('invalid'); valid = false; errors.push(f.id || f.name); }
+    }
+  });
+
+  // Required uploads
+  if (!fileStores['upload-id'].length) { valid = false; errors.push('Photo ID document'); }
+  if (!fileStores['upload-poa'].length) { valid = false; errors.push('Proof of address'); }
+  if (!fileStores['upload-sof'].length) { valid = false; errors.push('Source of funds'); }
+
+  // Signature
+  if (!hasSig) { valid = false; errors.push('Electronic signature'); }
+
+  // Mandatory consents
+  ['c1','c2','c3','c4','c5','c6','c7','c8'].forEach(id => {
+    if (!document.getElementById(id).checked) { valid = false; }
+  });
+
+  if (!valid) {
+    showToast('Please complete all required fields and upload documents (' + errors.length + ' item(s) outstanding)', true);
+    // Scroll to first invalid
+    const firstInvalid = document.querySelector('.invalid') || document.querySelector('[required]:invalid');
+    if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Simulate submission
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Sending…';
+
+  // In production: replace this block with a real email API call (e.g. EmailJS, Formspree, or backend endpoint)
+  // The form data, files, and signature canvas data would be serialised and sent to both email addresses.
+  setTimeout(() => {
+    const sigData = canvas.toDataURL('image/png');
+    // Collect all form values for display
+    const fd = new FormData(document.getElementById('mainForm'));
+    
+    // Simulate successful dual email send
+    btn.querySelector('span').textContent = '✓ Submitted Successfully';
+    btn.style.background = 'var(--success)';
+    showToast('✓ Form submitted to UK & Spanish offices simultaneously.');
+    
+    // Show confirmation message
+    const wrapper = document.querySelector('.form-wrapper');
+    const conf = document.createElement('div');
+    conf.style.cssText = 'background:var(--sage);color:var(--cream);padding:2rem;text-align:center;margin-top:2rem;';
+    conf.innerHTML = `
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:0.75rem;">Thank You</p>
+      <p style="font-size:12px;line-height:1.9;opacity:0.9;">Your client onboarding form has been securely transmitted to the UK and Spanish offices.<br>
+      A confirmation has been sent to <strong>${document.getElementById('email').value}</strong>.<br><br>
+      Reference: <strong>REF-${Date.now().toString(36).toUpperCase()}</strong><br><br>
+      A member of our compliance team will review your submission and contact you within 2 business days.<br>
+      <span style="opacity:0.65;font-size:10px;">Both offices have received your documents simultaneously — UK (MLR 2017 compliant) and Spain (Ley 10/2010 compliant).</span>
+      </p>
+    `;
+    wrapper.appendChild(conf);
+    conf.scrollIntoView({ behavior: 'smooth' });
+  }, 2200);
+});
+
+// Initial progress
+updateProgress();
+</script>
+
+</body>
+</html>
